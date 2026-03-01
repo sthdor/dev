@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xhs-hot-writer"
+version = "0.1.0"
+description = "Daily fetch and rewrite viral X/Instagram posts into Xiaohongshu-ready Chinese copy"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+xhs-hot-writer = "xhs_hot_writer.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-q"

@@ -1,0 +1,14 @@
+[Unit]
+Description=XHS Hot Writer Daily Service
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/pi/xhs-hot-writer
+EnvironmentFile=/home/pi/xhs-hot-writer/.env
+ExecStart=/home/pi/xhs-hot-writer/.venv/bin/xhs-hot-writer --dry-run
+StandardOutput=append:/home/pi/xhs-hot-writer/logs/daily.log
+StandardError=append:/home/pi/xhs-hot-writer/logs/daily.log
+
+[Install]
+WantedBy=multi-user.target

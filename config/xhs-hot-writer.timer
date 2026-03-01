@@ -1,0 +1,10 @@
+[Unit]
+Description=Run XHS Hot Writer every day
+
+[Timer]
+OnCalendar=*-*-* 08:00:00
+Persistent=true
+Unit=xhs-hot-writer.service
+
+[Install]
+WantedBy=timers.target
