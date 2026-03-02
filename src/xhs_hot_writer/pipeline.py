@@ -31,6 +31,7 @@ class DailyPipeline:
         ig_posts = self.ig_fetcher.fetch(ig_hashtag, fetch_count)
 
         selected = self._pick_top_posts(x_posts, "x") + self._pick_top_posts(ig_posts, "instagram")
+        selected = sorted(selected, key=lambda p: p.engagement_score, reverse=True)[: self.daily_top_n]
         rewritten: list[RewrittenPost] = []
         for post in selected:
             rewritten_post = self.rewriter.rewrite_for_xiaohongshu(post)

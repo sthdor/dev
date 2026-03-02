@@ -39,9 +39,8 @@ def test_pipeline_pick_top_and_persist(tmp_path: Path):
 
     result = pipeline.run("query", "tag", 10)
 
-    assert len(result) == 2
-    assert result[0].source.post_id == "2"
-    assert result[1].source.post_id == "4"
+    assert len(result) == 1
+    assert result[0].source.post_id == "4"
 
     generated = list((tmp_path / "output").rglob("*.md"))
-    assert len(generated) == 2
+    assert len(generated) == 1

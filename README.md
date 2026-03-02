@@ -1,8 +1,7 @@
 # XHS Hot Writer（树莓派可运行）
 
 一个可在 **树莓派 4B（8G）** 上长期运行的自动化项目：
-- 每天从 **X** 抓取爆款内容 3 篇
-- 每天从 **Instagram** 抓取爆款内容 3 篇
+- 每天从 **X + Instagram** 综合抓取爆款内容 **6 篇**
 - 自动翻译 + 润色成适合 **小红书发布** 的中文爆款文案
 - 按天输出 Markdown 文件，并用 SQLite 去重，避免重复改写
 
@@ -40,6 +39,22 @@ cp .env.example .env
 ```bash
 xhs-hot-writer --dry-run
 ```
+
+如果你在 `--dry-run` 阶段遇到超时（例如网络受限），可先给当前 shell 配置 Clash 代理后重试：
+
+```bash
+# Clash 常见本地端口，按你的实际配置修改
+export HTTP_PROXY=http://127.0.0.1:7890
+export HTTPS_PROXY=http://127.0.0.1:7890
+export ALL_PROXY=socks5://127.0.0.1:7890
+
+# 建议把本机和局域网地址排除代理
+export NO_PROXY=127.0.0.1,localhost,::1
+
+xhs-hot-writer --dry-run
+```
+
+也可以把以上变量写入 `.env`（项目启动时会自动加载），避免每次手动 `export`。
 
 ## 4. 输出结构
 
@@ -84,11 +99,13 @@ tail -f /home/pi/xhs-hot-writer/logs/daily.log
 
 ## 6. 可配置参数（.env）
 
-- `X_QUERY`: X 搜索词，例如 `AI OR 创业 min_faves:300 lang:en`
-- `IG_HASHTAG`: Instagram 标签，例如 `ai`
+- `X_QUERY`: X 搜索词，例如 `(fashion OR outfit OR swimwear OR fitness OR workout) min_faves:300 lang:en`
+- `IG_HASHTAG`: Instagram 标签，例如 `fashion`
 - `FETCH_COUNT`: 每个平台抓取候选条数（默认 20）
-- `DAILY_TOP_N`: 每个平台最终输出条数（默认 3）
+- `DAILY_TOP_N`: 每日最终输出总条数（默认 6）
 - `LLM_MODEL`: 生成模型名
+- `HTTP_PROXY` / `HTTPS_PROXY` / `ALL_PROXY`: 代理地址（可选，适合 Clash）
+- `NO_PROXY`: 不走代理的地址列表（可选）
 
 ## 7. 合规建议
 

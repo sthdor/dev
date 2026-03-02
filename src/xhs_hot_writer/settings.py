@@ -30,11 +30,14 @@ class Settings:
     llm_base_url: str = os.getenv("LLM_BASE_URL", "https://api.openai.com/v1")
     llm_model: str = os.getenv("LLM_MODEL", "gpt-4o-mini")
 
-    x_query: str = os.getenv("X_QUERY", "AI OR 创业 min_faves:300 lang:en")
-    ig_hashtag: str = os.getenv("IG_HASHTAG", "ai")
+    x_query: str = os.getenv(
+        "X_QUERY",
+        "(fashion OR outfit OR swimwear OR fitness OR workout) min_faves:300 lang:en",
+    )
+    ig_hashtag: str = os.getenv("IG_HASHTAG", "fashion")
 
     fetch_count: int = int(os.getenv("FETCH_COUNT", "20"))
-    daily_top_n: int = int(os.getenv("DAILY_TOP_N", "3"))
+    daily_top_n: int = int(os.getenv("DAILY_TOP_N", "6"))
     output_dir: Path = Path(os.getenv("OUTPUT_DIR", "output"))
     db_path: Path = Path(os.getenv("DB_PATH", "data/state.db"))
 
