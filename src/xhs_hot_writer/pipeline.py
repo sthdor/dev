@@ -26,7 +26,7 @@ class DailyPipeline:
         self.output_dir = output_dir
         self.daily_top_n = daily_top_n
 
-    def run(self, x_query: str, ig_hashtag: str, fetch_count: int) -> list[RewrittenPost]:
+    def run(self, x_query: str, ig_hashtag: str, fetch_count: int, dry_run: bool = False) -> list[RewrittenPost]:
         x_posts = self.x_fetcher.fetch(x_query, fetch_count)
         ig_posts = self.ig_fetcher.fetch(ig_hashtag, fetch_count)
 
@@ -34,7 +34,15 @@ class DailyPipeline:
         selected = sorted(selected, key=lambda p: p.engagement_score, reverse=True)[: self.daily_top_n]
         rewritten: list[RewrittenPost] = []
         for post in selected:
-            rewritten_post = self.rewriter.rewrite_for_xiaohongshu(post)
+            if dry_run:
+                rewritten_post = RewrittenPost(
+                    source=post,
+                    title=f"[DRY RUN] {post.platform}:{post.post_id}",
+                    content=post.text,
+                    hashtags=[],
+                )
+            else:
+                rewritten_post = self.rewriter.rewrite_for_xiaohongshu(post)
             rewritten.append(rewritten_post)
             self.state_store.mark_processed(post.platform, post.post_id)
 

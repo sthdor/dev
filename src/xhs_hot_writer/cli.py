@@ -37,6 +37,7 @@ def main() -> None:
         x_query=settings.x_query,
         ig_hashtag=settings.ig_hashtag,
         fetch_count=settings.fetch_count,
+        dry_run=args.dry_run,
     )
 
     if args.dry_run:
