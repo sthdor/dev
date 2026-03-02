@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Any
+from urllib.parse import quote
 
 from .http import post_json, with_query
 from .models import Post
@@ -15,7 +16,11 @@ class ApifyClient:
         self.base_url = "https://api.apify.com/v2"
 
     def run_actor(self, actor_id: str, payload: dict[str, Any]) -> list[dict[str, Any]]:
-        url = with_query(f"{self.base_url}/acts/{actor_id}/run-sync-get-dataset-items", {"token": self.token})
+        encoded_actor_id = quote(actor_id, safe="")
+        url = with_query(
+            f"{self.base_url}/acts/{encoded_actor_id}/run-sync-get-dataset-items",
+            {"token": self.token},
+        )
         data = post_json(url, payload, timeout=120)
         if not isinstance(data, list):
             return []
