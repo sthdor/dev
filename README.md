@@ -41,6 +41,8 @@ cp .env.example .env
 xhs-hot-writer --dry-run
 ```
 
+`--dry-run` 会抓取和筛选内容，但不会调用 LLM 改写（可用于快速检查抓取链路是否正常）。
+
 ## 4. 输出结构
 
 ```text
